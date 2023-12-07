@@ -14,17 +14,23 @@ if(empty($email) || empty($password)) {
     exit;
 }
 
-$con = mysqli_connect("localhost","root","","test");
-$email = mysqli_real_escape_string($con, $email);
-$password = mysqli_real_escape_string($con, $password);
-if($con) {
+$email = mysqli_real_escape_string($conn, $email);
+$password = mysqli_real_escape_string($conn, $password);
+$response = array("success" => false);
+if($conn) {
     $sql = "SELECT * FROM `users` WHERE `email`='$email' AND `password`='$password'";
-    $result = mysqli_query($con, $sql);
+    $result = mysqli_query($conn, $sql);
+
     if(mysqli_num_rows($result) > 0) {
-        echo "success";
+        $response["success"] = true;
+        $response["message"] = "Login success";
+        $response["data"] = mysqli_fetch_assoc($result);
+        echo json_encode($response);
     } else {
-        echo "error";
+        $response["message"] = "Invalid email or password";
+        echo json_encode($response);
     }
 } else {
-    echo "Database connection error";
+    $response["message"] = "Database connection error";
+    echo json_encode($response);
 }
