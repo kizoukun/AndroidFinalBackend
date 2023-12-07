@@ -23,15 +23,19 @@ $password = mysqli_real_escape_string($conn, $password);
 $student_id = mysqli_real_escape_string($conn, $student_id);
 $first_name = mysqli_real_escape_string($conn, $first_name);
 $last_name = mysqli_real_escape_string($conn, $last_name);
-
+$response = array("success" => false);
 if($conn) {
     $sql = "INSERT INTO `users`(`email`, `password`, `student_id`, `first_name`, `last_name`) VALUES ('$email','$password','$student_id','$first_name','$last_name')";
     $result = mysqli_query($conn, $sql);
     if($result) {
-        echo "success";
+        $response["success"] = true;
+        $response["message"] = "Register success";
+        $response["data"] = [];
     } else {
-        echo "error";
+        $response["message"] = "Register failed";
     }
+    echo json_encode($response);
 } else {
-    echo "Database connection error";
+    $response["message"] = "Database connection error";
+    echo json_encode($response);
 }
