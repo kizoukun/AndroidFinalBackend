@@ -73,9 +73,8 @@ JOIN
     $response["success"] = true;
     $response["message"] = "Get chat list success";
     $response["data"] = $data;
-    echo json_encode($response);
 } else {
     $response["message"] = "Database connection error";
-    echo json_encode($response);
 }
+echo json_encode($response);
 
