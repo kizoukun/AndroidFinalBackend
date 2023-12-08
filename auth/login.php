@@ -25,12 +25,10 @@ if($conn) {
         $response["success"] = true;
         $response["message"] = "Login success";
         $response["data"] = mysqli_fetch_assoc($result);
-        echo json_encode($response);
     } else {
         $response["message"] = "Invalid email or password";
-        echo json_encode($response);
     }
 } else {
     $response["message"] = "Database connection error";
-    echo json_encode($response);
 }
+echo json_encode($response);
