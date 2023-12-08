@@ -24,7 +24,7 @@ FROM
         FROM
             messages
         WHERE
-            sender_id = '1'
+            sender_id = $user
         UNION
         SELECT
             receiver_id AS sender_id,
