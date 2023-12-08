@@ -1,17 +1,35 @@
 <?php
 
+$response = array("success" => false);
+
+if(!isset($_GET)) {
+    $response["message"] = "Invalid request";
+    echo json_encode($response);
+    exit;
+}
+
 include "./database.php";
 global $conn;
 
-$query = "SELECT * FROM 'users' WHERE 'role' = 'lecturer'";
-$result = mysqli_query($conn, $query);
-
-if(mysqli_num_rows($result) > 0) {
-    $response = array();
-    while($row = mysqli_fetch_assoc($result)) {
-        $response[] = $row;
+if($conn) {
+    $sql = "SELECT * FROM `users` where `roles`='lecturer'";
+    $result = mysqli_query($conn, $sql);
+    $data = array();
+    if(mysqli_num_rows($result) > 0) {
+        while($row = mysqli_fetch_assoc($result)) {
+            $rowed = array(
+                "id" => $row['id'],
+                "first_name" => $row['first_name'],
+                "last_name" => $row['last_name'],
+                "created_at" => $row['created_at'],
+            );
+            $data[] = $rowed;
+        }
     }
-    echo json_encode($response);
+    $response["success"] = true;
+    $response["message"] = "Get lecturer success";
+    $response["data"] = $data;
 } else {
-    echo "error";
+    $response["message"] = "Database connection error";
 }
+echo json_encode($response);
